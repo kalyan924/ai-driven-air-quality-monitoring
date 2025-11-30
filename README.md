@@ -1,109 +1,151 @@
-# 🌍 Air Quality Prediction & Monitoring Dashboard
+🌍 AI-Driven Air Quality Monitoring Dashboard
+📌 Mini Project — Anurag University
 
----
+Team Members:
 
-📌 Project Objective
+Kalyan Nallavolu — 22EG112D46
 
-This project aims to develop a robust **Air Quality Monitoring System** that can:
+Sri Varshith — 22EG112D44
 
-- ✅ Predict **PM2.5** concentration based on key pollutant levels (Regression task).
-- ✅ Calculate the **Air Quality Index (AQI)** dynamically.
-- ✅ Visualize air quality stations across India on an **interactive map** similar to [CPCB AQI India](https://airquality.cpcb.gov.in/AQI_India/).
+Manas — 22EG112D60
+Department: B.Tech IT — R22 Regulation
 
-The goal is to empower citizens, researchers, and authorities with real-time, interpretable air quality data.
+🎯 Project Objective
 
----
+This project aims to build an AI-powered air quality monitoring web application that:
 
-🧠 Models Built
+✔ Predicts PM2.5 based on multiple pollutant inputs using a Machine Learning model
+✔ Calculates AQI (Air Quality Index) and shows severity levels
+✔ Fetches live real-time station-based air quality data using the OpenAQ API
+✔ Visualizes Indian air quality on an interactive map
+✔ Provides EDA insights such as:
 
-**Regression Model**
+AQI bucket distribution
 
-- **Goal:** Predict PM2.5 levels using inputs like CO, NO2, SO2, NH3, OZONE, PM10.
-- **Algorithm:** Random Forest Regressor with hyperparameter tuning.
-- **Performance (example):**
-  - RMSE: 18.45
-  - MAE: 12.32
-  - R² Score: 0.87
+Most polluted & least polluted cities (current snapshot)
 
----
+City-wise pollutant analysis
 
-🗂️ Dataset Description
+🧠 Machine Learning Model
+Attribute	Result
+ML Task	Regression
+Target Variable	PM2.5
+Features Used	CO, NO₂, SO₂, NH₃, O₃, PM₁₀
+Algorithm Used	Pre-trained regression model (via predict.py)
 
-The dataset combines **CPCB**, **OpenAQ**, and fallback mock station data for Indian cities.  
-Features include:
+📌 The predicted PM2.5 is then converted into AQI category:
 
-- Pollutants: **CO**, **NO2**, **SO2**, **NH3**, **OZONE**, **PM10**
-- Target: **PM2.5**
-- Geolocation: **Latitude**, **Longitude**, **City**
-- Timestamps: **last_update**
+Good
 
----
+Satisfactory
 
-📊 Methodology
+Moderate
 
-**Data Preprocessing**
+Poor
 
-- Null value handling
-- Pivot table to get wide format
-- Feature engineering & standardization
+Very Poor
 
-**Exploratory Data Analysis (EDA)**
+Severe
 
-- Correlation heatmaps
-- Distributions of pollutant levels
-- Time trends of PM2.5
+🌐 Live Data Integration
 
-**Model Training**
+We use:
 
-- Train-Test split (80-20)
-- Random Forest with `GridSearchCV` or `RandomizedSearchCV`
-- Evaluation using RMSE, MAE, R²
+📡 OpenAQ Public API — to fetch real-time pollutant data for Indian cities
+🛟 Built-in fallback dataset to ensure the dashboard always runs even without internet/API limits
 
----
+➡ AQI computed internally based on pollutant levels.
 
-🚀 Live Deployment
+📊 Exploratory Data Analysis (Interactive)
 
-The full dashboard is built with **Streamlit** and can be deployed on **Render** or **Streamlit Cloud**.
+📦 AQI Bucket Chart (snapshot-based)
 
-Features:
-- 📈 Predict PM2.5 for custom inputs
-- 🎨 Color-coded AQI output block
-- 🗺️ Interactive Folium map with **marker clustering**, **search bar**, **legend**
+📈 Pearson Correlation Matrix
 
----
+🏭 Most polluted cities (current API snapshot)
+
+🌿 Least polluted cities
+
+🏙️ City-wise pollutant bar chart
+
+📅 Yearly AQI analysis (enabled when date/year data available)
+
+🗺️ Map-Based Monitoring
+
+Built using Folium
+
+Colour-coded markers based on AQI value
+
+Marker clustering enabled
+
+Legend clearly indicating AQI health category
 
 🛠️ Tech Stack
-
-- **Python**
-- **Pandas, NumPy**
-- **Scikit-learn**
-- **Streamlit**
-- **Folium**, **Streamlit-Folium**
-- **Matplotlib**, **Seaborn**
-- **Render** (for deployment)
-
----
-
-📁 Project Structure
-
-```plaintext
+Component	Technology
+Frontend	Streamlit
+Model	scikit-learn
+Data Source	OpenAQ API (live)
+Maps	Folium + streamlit-folium
+Backend Script	Python
+Data Handling	Pandas
+📁 Folder Structure
 air_quality_project/
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   ├── external/
-├── notebooks/
-│   ├── 01_eda.ipynb
-│   ├── 02_modeling.ipynb
-│   ├── 03_evaluation.ipynb
 ├── src/
-│   ├── app.py
-│   ├── predict.py
-│   ├── aqi_calculator.py
-│   ├── stations.py
+│   ├── app.py                # Streamlit main UI
+│   ├── predict.py            # Loads ML model + prediction logic
+│   ├── stations.py           # API and fallback station data
+│   ├── aqi_calculator.py     # AQI conversion logic
 ├── models/
-│   ├── air_quality_model.pkl
-├── requirements.txt
-├── README.md
-├── .gitignore
-└── run.py
+│   ├── model.pkl             # ML model used for prediction
+├── requirements.txt          # Dependencies
+├── README.md                 # Documentation
+
+🚀 Run Locally
+
+Run these commands in VS Code terminal
+
+cd air_quality_project
+pip install -r requirements.txt
+streamlit run src/app.py
+
+
+Then open the URL:
+
+http://localhost:8501
+
+🌍 Deployment
+
+This application is deployable on:
+
+Render
+
+Streamlit Cloud
+
+Heroku (if required)
+
+Start command (for Render):
+
+streamlit run src/app.py --server.port 10000 --server.address 0.0.0.0
+
+📌 Limitations & Future Scope
+Current Limitations
+
+API provides snapshot-based AQI — not guaranteed to match CPCB official figures always
+
+Yearly trend limited if timestamp not available in API response
+
+Future Enhancements
+
+🔹 Integrate proper historical database (time-series AQI)
+🔹 Better AQI calculation for exact CPCB compliance
+🔹 Mobile-friendly UI
+🔹 Deploy as a mobile app with GPS-based AQI alerts
+
+🏁 Conclusion
+
+This project demonstrates how Machine Learning, APIs, and visual analytics
+can be combined to make air quality information predictive, interactive, and easy to understand.
+
+✨ Made with effort by
+Team - AI Driven AQ Monitoring System
+Department of IT — Anurag University
