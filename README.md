@@ -111,7 +111,6 @@ streamlit run src/app.py
 
 Then open the URL:
 
-http://localhost:8501
 
 🌍 Deployment
 
